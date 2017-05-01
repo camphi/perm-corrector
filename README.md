@@ -5,7 +5,8 @@ TODO:
 - search all sub folder for ".permconf" files
 - read file one permission per line ex:
 ```
-f644 camphi camphi public_html
-d755 camphi camphi public_html
+public_html f644 camphi camphi
+public_html d755 camphi camphi 
 ```
 - execute permisions in order
+- user and group are optionnal
