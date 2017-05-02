@@ -31,21 +31,26 @@ SCRIPTPATH=$(dirname "$SCRIPT")
 DD=$(readlink -f "$1")
 CL=$(find "$DD" -maxdepth 3 -type f -name ".permconf")
 
-while IFS='' read -r filePath || [[ -n "$filePath" ]]; do
-  echo $filePath
+# for each conf file
+while IFS='' read -r permFilePath || [[ -n "$permFilePath" ]]; do
+  echo $permFilePath
+  # for each permission
   while IFS='' read -r line || [[ -n "$line" ]]; do
-    echo " - ""$line"
+    echo "$line"
+    # validate Path
     PP=$(echo $line | awk '{ print $1 }')
-    RP=${PP:0:1}
-    if [[ "$RP" = "." ]]
+    RP1=${PP:0:1}
+    RP2=${PP:1:1}
+    if [[ "$RP1" = "." ]] && [[ ! "$RP2" =~ [a-zA-Z0-9_-] ]]
     then
-      echo "$RP""WWWORKK"
-      dirPath=$(dirname "$filePath")
+      # echo "$RP""WWWORKK"
+      dirPath=$(dirname "$permFilePath")
       PP=$(echo "$PP" | sed  -n -e 's,^\.,,p')
       PP="$dirPath""$PP"
     fi
+    # echo "$PP"
     
-    # number=${filename:offset:length}
+    # validate permission
   done < "$filePath"
 done <<< "$CL"
 
